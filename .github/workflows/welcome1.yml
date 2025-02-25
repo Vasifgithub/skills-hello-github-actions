@@ -4,3 +4,19 @@ on:
     types: [opened]
 permissions:
   pull-requests: write
+jobs:
+  post-comment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Post welcome comment
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: "🎉 Welcome! Thank you for opening this pull request. A maintainer will review it shortly."
+            })
